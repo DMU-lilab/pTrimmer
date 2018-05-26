@@ -1,0 +1,37 @@
+System Requirement
+=======================
+
+pTrimmer requires the zlib library <http://zlib.net>
+
+The following programs are required:
+
+    GNU make
+    C compiler (e.g. gcc or clang)
+
+
+For linux
+=======================
+
+To build the pTrimmer, 'cd' to pTrimmer directory
+
+    cd ./pTrimmer
+    make
+    make clean
+
+Then there will be an executable file --> pTrimmer-1.3.1
+
+
+For Windows
+=======================
+
+The static library of zlib has been included in the directory of 'Win32',
+so there is no need to install zlib library again.
+The compiler of MinGW(gcc) <http://www.mingw.org/> is required to compile the program.   
+
+Windows comamd line (CMD) is required to build and use the program.
+
+    cd .\pTrimmer
+    mingw32-make
+    mingw32-make clean
+
+Then there will be an executable file --> pTrimmer-1.3.1.exe

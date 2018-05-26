@@ -1,0 +1,25 @@
+The "PrimMatch-1.2.1.py" is a python script used to test the match status between your fastq file and primer.
+USAGE: python PrimMatch-1.2.1.py <amplicon.txt> <*.fq/*.fq.gz>
+
+There are two match status between the primer and sequence:
+
+eg.1 The DNA sequence is shorted than the Illumina read (usually occur in the CfDNA)
+NOTE: has a forward primer(5') and reverse complement primer(3')
+
+                                   fastq sequence
+                                          |
+NCCATACAATTTGATGACATGTGGGTGGTTGACCTGCTTCAGGACGTTGAACTCTGTTTGCAAACGATCGCTCCTGGAAGCAGATCG
+CCCATACAATTTGATGACATGTGGG                                      ACGATCGCTCCTGGAAGC
+         |                                                             | 
+    forward primer                                          reverse complement primer
+
+
+eg.2 The DNA sequence is longer than the Illumina read (the general condition)
+NOTE: only has forward primer(5')
+
+                                   fastq sequence
+                                          |
+NCCATACAATTTGATGACATGTGGGTGGTTGACCTGCTTCAGGACGTTGAACTCTGTTTGCAAACGATCGCTCCTGGAAGCAGATCG
+CCCATACAATTTGATGACATGTGGG
+         |
+    forward primer
