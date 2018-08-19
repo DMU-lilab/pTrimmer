@@ -14,7 +14,7 @@ void Usage(void)
         "       -l|--keep        keep the complete reads if can't locate primer\n" 
         "                        sequence [default: discard the reads]\n"
         "       -s|--seqtype     [required] the sequencing type [single|pair]\n"
-        "       -a|--ampfile     [required] input amplicon file [.csv]\n"
+        "       -a|--ampfile     [required] input amplicon file [.txt]\n"
         "       -f|--read1       [required] read1(forward) for fastq file [.fq|.gz]\n"
         "       -r|--read2       [optional] read2(reverse) for paired-end seqtype [.fq|.gz]\n"
         "       -o|--outdir      [required] output directory for trimed fastq file [dir]\n"
