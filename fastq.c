@@ -38,7 +38,7 @@ static char *BaseName(char *path)
 void FastqInit(fastq_t *fq, arg_t *args, int type)
 {
     char bname[128];
-    char outname[PATH_MAX];
+    char outname[PATH_MAX+1024];
 
     fq->bufnum = 0;
     strcpy(bname, BaseName(args->read1));
