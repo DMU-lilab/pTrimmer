@@ -84,7 +84,7 @@ Option
       eg. data_R2.fq or data_R2.fq.gz
 
 #### \[-o|--outdir]
-      The output directory of the trimed fastq file
+      The existed output directory for the trimed fastq file
 
 #### \[-q|--minqual]
       The minimum average quality to keep after triming. The program will automatically
@@ -113,3 +113,10 @@ or 2 files for single-end:
 Description:
 1. \*_trim_R1.fq and \*_trim_R2.fq are the fastq file after primer trimed!<br>
 2. The field of "AmpCount" in the Summary.ampcount file indicate the reads belong to the amplicon.<br>
+
+
+Citation
+=========================
+Please cite the following article if you find the pTrimmer is useful to you:
+* Zhang X, Shao Y, Tian J, et al. pTrimmer: An efficient tool to trim primers of multiplex deep sequencing data[J]. BMC bioinformatics, 2019, 20(1): 236.
+
