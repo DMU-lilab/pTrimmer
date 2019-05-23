@@ -1,9 +1,19 @@
 # Makefile for pTrimmer
+
+DEBUG = 0
+
 CC = gcc
-CFLAGS = -std=c99 -O2 -g
+CFLAGS = -std=c99
 LIBDIR =
 LIBS = -lpthread
 INCLUDE = 
+
+ifeq ($(DEBUG), 1)
+    CFLAGS += -g -O0 # enable debugging
+else
+    CFLAGS += -O2
+endif
+
 
 OBJECT = fastq.o hash.o index.o parse.o query.o dynamic.o main.o
 

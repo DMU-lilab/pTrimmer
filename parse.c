@@ -33,11 +33,11 @@ static const struct option long_options[] =
     { "seqtype", required_argument, NULL, 's' },
     { "ampfile", required_argument, NULL, 'a' },
     { "read1", required_argument, NULL, 'f' },
-    { "read2", optional_argument, NULL, 'r' },
+    { "read2", required_argument, NULL, 'r' },
     { "outdir", required_argument, NULL, 'o' },
-    { "minqual", optional_argument, NULL, 'q' },
-    { "kmer", optional_argument, NULL, 'k' },
-    { "mismatch", optional_argument, NULL, 'm' },
+    { "minqual", required_argument, NULL, 'q' },
+    { "kmer", required_argument, NULL, 'k' },
+    { "mismatch", required_argument, NULL, 'm' },
     { NULL, 0, NULL, 0 }
 };
 
