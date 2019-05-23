@@ -20,11 +20,13 @@ OBJECT = fastq.o hash.o index.o parse.o query.o dynamic.o main.o
 ifeq ($(shell uname -s),Linux)
 	PROG = pTrimmer-1.3.1
 	LIBS += -lz
+	RM = rm
 else
 	PROG = pTrimmer-1.3.1.exe
 	INCLUDE += -IWin32
 	LIBDIR += -LWin32
 	LIBS += -lzdll
+	RM = del
 endif
 
 $(PROG): $(OBJECT)
@@ -41,5 +43,5 @@ main.o: query.h
 .PHONY : clean
 
 clean:
-	rm -f $(OBJECT)
+	$(RM) -f $(OBJECT)
 
