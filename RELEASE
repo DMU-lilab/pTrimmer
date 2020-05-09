@@ -1,0 +1,96 @@
+# RELEASE_HISTORY #
+
+===================== Version1.1 =====================
+
+Version: 1.1
+Date:    2017-10-07
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Modify:  index.c/AmpWrite:add necessary field!
+
+===================== Version1.2 =====================
+
+Version: 1.2
+Date:    2017-10-07
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Modify:
+    query.h: add READLEN=150
+    query.c/PrimQuery: add the condition that not sequenced the reverse primer 
+    query.c/PrimTrim: strcpy seq and quality directly from the pstart to the end!
+
+Version: 1.2
+Date:    2017-10-14
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Modify:
+    fastq.c/FastqInit: the write out mode change to "w", to flush the existed file.
+
+===================== Version1.2.1 =====================
+
+Version: 1.2.1
+Date:    2017-11-04
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Modify:
+    query.c/SeqQuery: cutlen = 3 + mis, which is more reasonable and fast than previous!
+    Test/PrimMatch-1.2.1.py: modify the rules to equivalent to "SeqQuery rules".
+
+NOTE: we modify the rules of sequence query. Because Assuming that every fastq sequence 
+has a primer seq, we will sure that after query for "3+mismatch" bases, there is no 
+possibility to find the primer seq anymore!
+
+===================== Version1.2.2 =====================
+
+Version: 1.2.2
+Date:    2018-01-17
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Modify:
+    query.c/PrimTrim: The data was copied to read cache directly.
+
+NOTE: The function of strcpy is not safe when the memory of src and dest have overlap!
+
+===================== Version1.3.0 =====================
+
+Version: 1.3.0
+Date:    2018-04-11
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Descrip:
+    1. support single-end and paired-end
+    2. support detect the maximum read length and quality Phred coding(Phred+33 and Phred+64) automatically
+    3. support filtering the trimed sequence by average quality [default:20]
+    4. firstly search primer sequence with k-mer(seed and extend). If failed, get the most postential(high score) primer sequence and aligned with dynamic algorithm.
+Modify:
+    1. fastq.h: adding seqtype(sngle and pair) and quality Phred encoding(Phred+33 and Phred+64)
+    2. fastq.c: adding funciton "ReadLenCheck", "PhredCheck", "MeanQuality"
+        (1) ReadLenCheck: obtain the maximum read length by sample 1000 reads from fastq file
+        (2) PhredCheck: check the qualit coding way, one of Phred+33 and Phred+64, by sample 1000 reads from fastq file.
+        (3) MeanQuality: calculate the average quality of sequence after trimming.
+    3. query.c: adding function "MaxPrimLen", "HammingMode", "DynamicMode", "GetHit"
+        (1) MaxPrimLen: obtain the maximum primer length from the amplicon primer list
+        (2) HammingMode: search the primer sequence with kmer(seed and extend) and mismatch check with Hamming mode
+        (3) DynamicMode: search the primer sequence with dynamic programing algorithm
+        (4) GetHit: get all the postential primer sequence and socred by higher kmer hits for primer sequence 
+    4. dynamic.c: search the primer sequence with dynamic programing algorithm
+
+===================== Version1.3.1 =====================
+
+Version: 1.3.1
+Date:    2018-05-09
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Descrip:
+    1. add directly of 'Win32', contain the static library and C header of zlib.
+    2. support running on both windows and linux platform.
+
+===================== Version1.3.2 =====================
+
+Version: 1.3.2
+Date:    2020-05-09
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Descrip:
+    1. Fix: wrong amplicon number induced by 'index.c/GetPrim'
+    2. New: allow users to specify input and output file names unrestricted
