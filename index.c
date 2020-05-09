@@ -36,6 +36,7 @@ prim_t *GetPrim(char *filename)
                 err_realloc(p->amp, newsize, amp_t);
             }
             a = &(p->amp[p->ampnum]);
+            a->readnum = 0;
             sscanf(buf, "%s%s%d%s", 
                     a->fwdprim, a->revprim, &a->insertlen, a->auxinfo);
             p->ampnum++;
