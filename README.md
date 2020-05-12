@@ -24,7 +24,7 @@ __DEPENDENCE__<br>
 Description
 =========================
 * The program is used to trim off the primer sequence of the target sequencing at both 5'(forward primer) and 3'(reverse complement primer). <br>
-* Both k-mer indexing alogrithm and dynamic programing alogrithm were performed to trim off the primer sequencemakes.<br>
+* Both k-mer indexing alogrithm and dynamic programing alogrithm were performed to trim off the primer sequences.<br>
 * The performing of k-mer (seed and extend) alogrithm makes it possible to deal with __thousands of amplicon primer pairs__ at the same time.<br>
 * Compared with other kinds of tools, this program could trim the primer sequence off directly from the fastq file, which could save you a lot of time.<br>
 * There only have 250 reads in the example fastq file, which result in a higher mismatch ratio. But in the general amplicon data, the program will has a good performance and lower mismatch ratio.
