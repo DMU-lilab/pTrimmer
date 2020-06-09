@@ -130,5 +130,5 @@ Description:
 Citation
 =========================
 Please cite the following article if you find the pTrimmer is useful to you:
-* Zhang X, Shao Y, Tian J, et al. pTrimmer: An efficient tool to trim primers of multiplex deep sequencing data[J]. BMC bioinformatics, 2019, 20(1): 236.
+* Zhang, X., Shao, Y., Tian, J. et al. pTrimmer: An efficient tool to trim primers of multiplex deep sequencing data. BMC Bioinformatics 20, 236 (2019). https://doi.org/10.1186/s12859-019-2854-x
 
