@@ -24,7 +24,7 @@ __DEPENDENCE__<br>
 Description
 =========================
 * The program is used to trim off the primer sequence of the target sequencing at both 5'(forward primer) and 3'(reverse complement primer). <br>
-* Both k-mer indexing alogrithm and dynamic programing alogrithm were performed to trim off the primer sequencemakes.<br>
+* Both k-mer indexing alogrithm and dynamic programing alogrithm were performed to trim off the primer sequences.<br>
 * The performing of k-mer (seed and extend) alogrithm makes it possible to deal with __thousands of amplicon primer pairs__ at the same time.<br>
 * Compared with other kinds of tools, this program could trim the primer sequence off directly from the fastq file, which could save you a lot of time.<br>
 * There only have 250 reads in the example fastq file, which result in a higher mismatch ratio. But in the general amplicon data, the program will has a good performance and lower mismatch ratio.
@@ -130,5 +130,5 @@ Description:
 Citation
 =========================
 Please cite the following article if you find the pTrimmer is useful to you:
-* Zhang X, Shao Y, Tian J, et al. pTrimmer: An efficient tool to trim primers of multiplex deep sequencing data[J]. BMC bioinformatics, 2019, 20(1): 236.
+* Zhang, X., Shao, Y., Tian, J. et al. pTrimmer: An efficient tool to trim primers of multiplex deep sequencing data. BMC Bioinformatics 20, 236 (2019). https://doi.org/10.1186/s12859-019-2854-x
 
