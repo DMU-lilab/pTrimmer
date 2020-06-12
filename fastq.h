@@ -10,9 +10,13 @@
   #include "Win32\zlib.h"
   #define PATH_MAX 260
   #define BUFNUM 1024 // default buf number for the fastq cache
-#else
+#elif __linux__
   #include <zlib.h>
   #include <linux/limits.h>
+  #define BUFNUM 2048
+#else
+  #include <zlib.h>
+  #include <limits.h>
   #define BUFNUM 2048
 #endif
 

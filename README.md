@@ -5,7 +5,7 @@ Used to trim off the primer sequence from amplicon fastq file
 
 __PROGRAM: pTrimmer__<br>
 __VERSION: 1.3.2__<br>
-__PLATFORM: Linux and Windows__<br>
+__PLATFORM: Linux, macOS and Windows__<br>
 __COMPILER: gcc-4.8.5__<br>
 __AUTHOR: xiaolong zhang__<br>
 __EMAIL: xiaolongzhang2015@163.com__<br>
@@ -16,7 +16,7 @@ __DEPENDENCE__<br>
 #### NOTE
 * The first thing you need to do is confirming the libraries above have been installed.<br />
 * And the gcc compiler should be available on your server or laptop.<br />
-* The program could run on a standard dual core laptops with 8 GB of RAM on both windows(win7 or win10) and linux(centos or ubuntu).<br />
+* The program could run on a standard dual core laptops with 8 GB of RAM on windows(win7 or win10), macOS and linux(centos or ubuntu).<br />
 
 #### NEW (2020-05-09)
 * This version (V1.3.2) allow users to specify input and output file names unrestricted<br />
@@ -24,7 +24,7 @@ __DEPENDENCE__<br>
 Description
 =========================
 * The program is used to trim off the primer sequence of the target sequencing at both 5'(forward primer) and 3'(reverse complement primer). <br>
-* Both k-mer indexing alogrithm and dynamic programing alogrithm were performed to trim off the primer sequences.<br>
+* Both k-mer indexing alogrithm and dynamic programing alogrithm were performed to trim off the primer sequencemakes.<br>
 * The performing of k-mer (seed and extend) alogrithm makes it possible to deal with __thousands of amplicon primer pairs__ at the same time.<br>
 * Compared with other kinds of tools, this program could trim the primer sequence off directly from the fastq file, which could save you a lot of time.<br>
 * There only have 250 reads in the example fastq file, which result in a higher mismatch ratio. But in the general amplicon data, the program will has a good performance and lower mismatch ratio.
@@ -130,5 +130,5 @@ Description:
 Citation
 =========================
 Please cite the following article if you find the pTrimmer is useful to you:
-* Zhang, X., Shao, Y., Tian, J. et al. pTrimmer: An efficient tool to trim primers of multiplex deep sequencing data. BMC Bioinformatics 20, 236 (2019). https://doi.org/10.1186/s12859-019-2854-x
+* Zhang X, Shao Y, Tian J, et al. pTrimmer: An efficient tool to trim primers of multiplex deep sequencing data[J]. BMC bioinformatics, 2019, 20(1): 236.
 
