@@ -21,6 +21,10 @@ ifeq ($(shell uname -s),Linux)
 	PROG = pTrimmer-1.3.2
 	LIBS += -lz
 	RM = rm
+else ifeq ($(shell uname -s),Darwin)
+	PROG = pTrimmer-1.3.2
+	LIBS += -lz
+	RM = rm
 else
 	PROG = pTrimmer-1.3.2.exe
 	INCLUDE += -IWin32

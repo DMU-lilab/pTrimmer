@@ -9,7 +9,7 @@ The following programs are required:
     C compiler (e.g. gcc or clang)
 
 
-For linux
+For linux and macOS
 =======================
 
 To build the pTrimmer, 'cd' to pTrimmer directory

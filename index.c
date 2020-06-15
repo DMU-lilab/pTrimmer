@@ -6,8 +6,11 @@
 #ifdef _WIN32
   #define PATH_MAX 260
   #define _PDELIM_ 92 // '\'
-#else
+#elif __linux__
   #include <linux/limits.h>
+  #define _PDELIM_ 47 // '/'
+#else
+  #include <limits.h>
   #define _PDELIM_ 47 // '/'
 #endif
 

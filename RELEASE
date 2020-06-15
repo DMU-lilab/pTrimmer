@@ -83,7 +83,7 @@ Author:  xiaolong zhang
 Email:   xiaolongzhang2015@163.com
 Descrip:
     1. add directly of 'Win32', contain the static library and C header of zlib.
-    2. support running on both windows and linux platform.
+    2. support running on windows, macOS and linux platform.
 
 ===================== Version1.3.2 =====================
 
