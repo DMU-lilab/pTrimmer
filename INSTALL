@@ -18,7 +18,7 @@ To build the pTrimmer, 'cd' to pTrimmer directory
     make
     make clean
 
-Then there will be an executable file --> pTrimmer-1.3.2
+Then there will be an executable file --> pTrimmer-1.3.3
 
 
 For Windows
@@ -34,4 +34,4 @@ Windows comamd line (CMD) is required to build and use the program.
     mingw32-make
     mingw32-make clean
 
-Then there will be an executable file --> pTrimmer-1.3.2.exe
+Then there will be an executable file --> pTrimmer-1.3.3.exe
