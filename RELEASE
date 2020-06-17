@@ -94,3 +94,12 @@ Email:   xiaolongzhang2015@163.com
 Descrip:
     1. Fix: wrong amplicon number induced by 'index.c/GetPrim'
     2. New: allow users to specify input and output file names unrestricted
+    
+===================== Version1.3.3 =====================
+
+Version: 1.3.3
+Date:    2020-06-15
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Descrip:
+    1. New: add support for macOS
