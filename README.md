@@ -111,7 +111,62 @@ Option
       the maxmum mismatch allowed in the  primer matching [ mismatch <= 3 is recommended]
 
 
-OutPut
+Input
+=========================
+**One amplicon**
+
+        forward primer(22bp)                                   reverse primer(20bp)
+        ++++++++++++++++++=====================================++++++++++++++++++
+        |                 |                                   |                 |
+    ampstart         insertstart                         insertend            ampend
+     (100)              (122)                               (380)              (401)
+
+
+**amplicon_file.txt**
+
+    #FowrdPrimer<TAB>ReversePrimer<TAB>InsertLength<TAB>AuxInfo
+    AAAAAAAAAAAAAAAAAAAAAA<TAB>BBBBBBBBBBBBBBBBBBBB<TAB>259<TAB>Amplicon1
+
+**Description**
+
+* The amplicon size is 300bp (401-100+1) in this example
+* forward primer: 22bp (5'->3': AAAAAAAAAAAAAAAAAAAAAA)
+* reverse primer: 20bp (5'->3': BBBBBBBBBBBBBBBBBBBB)
+* InsertLength: insertend - insertstart + 1 (380-122+1)
+* AuxInfo: the amplicon name or something else
+
+**Note**
+
+* The sequence of both forward and reverse primers should be in the direction of 5' to 3'
+* The insert length is no necessary to be very accurate, it is only used to determine the two conditions of primer trimming, however, we suggest that users calculate the insert length according to the position given by the primer-design tools:
+
+      (1) read-through condition
+
+      Amplicon1:
+          #FowrdPrimer<TAB>ReversePrimer<TAB>InsertLength<TAB>AuxInfo
+          CCCATACAATTTGATGACATGTGGG<TAB>GCTTCCAGGAGCGATCGT<TAB>38<TAB>FakeAmplicon1
+
+      Match Status1:
+          NCCATACAATTTGATGACATGTGGGTGGTTGACCTGCTTCAGGACGTTGAACTCTGTTTGCAAACGATCGCTCCTGGAAGCAGATCG
+          CCCATACAATTTGATGACATGTGGG                                      ACGATCGCTCCTGGAAGC
+                  |                                                             | 
+              forward primer                                          reverse complement primer
+
+
+      (2) normal condition
+
+      Amplicon2:
+          #FowrdPrimer<TAB>ReversePrimer<TAB>InsertLength<TAB>AuxInfo
+          CCCATACAATTTGATGACATGTGGG<TAB>GGTTAGTTCCAGCCTGAATCA<TAB>282<TAB>FakeAmplicon2
+
+      Match Status2:
+          NCCATACAATTTGATGACATGTGGGTGGTTGACCTGCTTCAGGACGTTGAACTCTGTTTGCAAACGATCGCTCCTGGAAGCAGATCG
+          CCCATACAATTTGATGACATGTGGG
+                  |
+              forward primer
+                
+
+Output
 =========================
 The program will generate 3 files for paired-end:
 1. trim.R1.fq
