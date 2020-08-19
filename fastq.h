@@ -21,7 +21,7 @@
 #endif
 
 
-#define FQLINE 256    // maxmum length for the fastq line
+#define FQLINE 512    // maxmum length for the fastq line
 #define BUFLINE 1024  // maxmum bufer line for file reading
 
 
