@@ -11,7 +11,7 @@
 
 #define MAXPRIMLEN 128 // ideal maxmum length for the primer seq
 #define PRIMNUM 128    // initial primer number
-#define AUXLEN 256     // maxmum length for auxinfo
+#define AUXLEN 512     // maxmum length for auxinfo
 #ifndef BUFLINE
     #define BUFLINE 1024
 #endif
