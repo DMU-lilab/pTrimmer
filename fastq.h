@@ -13,11 +13,11 @@
 #elif __linux__
   #include <zlib.h>
   #include <linux/limits.h>
-  #define BUFNUM 2048
+  #define BUFNUM 1024
 #else
   #include <zlib.h>
   #include <limits.h>
-  #define BUFNUM 2048
+  #define BUFNUM 1024
 #endif
 
 
