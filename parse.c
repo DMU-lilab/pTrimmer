@@ -7,7 +7,7 @@ void Usage(void)
 {
     char *usage =
         "\nUsage: pTrimmer [options]\n"
-        "Version: 1.3.3\n"
+        "Version: 1.3.4\n"
         "\n"
         "Options:\n"
         "       -h|--help        print help infomation\n"
