@@ -4,13 +4,13 @@ Used to trim off the primer sequence from amplicon fastq file
 
 
 __PROGRAM: pTrimmer__<br>
-__VERSION: 1.3.3__<br>
+__VERSION: 1.3.4__<br>
 __PLATFORM: Linux, macOS and Windows__<br>
 __COMPILER: gcc-4.8.5__<br>
 __AUTHOR: xiaolong zhang__<br>
 __EMAIL: xiaolongzhang2015@163.com__<br>
 __DATE:   2017-09-21__<br>
-__UPDATE: 2020-06-15__<br>
+__UPDATE: 2021-03-17__<br>
 __DEPENDENCE__<br>
 * zlib-1.2.7<br>
 #### NOTE
@@ -18,8 +18,8 @@ __DEPENDENCE__<br>
 * And the gcc compiler should be available on your server or laptop.<br />
 * The program could run on a standard dual core laptops with 8 GB of RAM on windows(win7 or win10), macOS and linux(centos or ubuntu).<br />
 
-#### NEW (2020-06-15)
-* This version (V1.3.3) adds support for macOS <br />
+#### NEW (2021-03-17)
+* This version (V1.3.4) add support for 512bp sequence length at most <br />
 
 Description
 =========================
