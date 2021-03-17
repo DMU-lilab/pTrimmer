@@ -301,6 +301,7 @@ void PrimTrim(fastq_t *fq, query_t *Q, arginfo_t *arg)
             }
             else discard = 1;
         }
+        if (strlen(read->seq) < 1) discard = 1;
     }
     else { // can't find the primer sequence
         if (arg->args->keep) {
