@@ -32,6 +32,7 @@ enum SEQTYPE { SE = 0, PE = 1 };
 /* illumina quality type phred+33(33<=qual<=75) and phred+64(64<=qual<=106)*/
 enum ILLUMINATYPE { Phrd33 = 0, Phrd64 = 1};
 
+
 /*! @typedef arg_t
  @abstract structure for the comand line args
  @field help         [0 | 1] if 1: print the help infomation
