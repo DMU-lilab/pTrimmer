@@ -103,3 +103,15 @@ Author:  xiaolong zhang
 Email:   xiaolongzhang2015@163.com
 Descrip:
     1. New: add support for macOS
+
+===================== Version1.3.4 =====================
+
+Version: 1.3.4
+Date:    2021-03-17
+Author:  xiaolong zhang
+Email:   xiaolongzhang2015@163.com
+Descrip:
+    1. New: add support for 512bp sequence length at most
+    2. Fix: add necessary abort message for users
+    
+    
