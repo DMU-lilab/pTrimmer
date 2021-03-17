@@ -18,15 +18,15 @@ endif
 OBJECT = fastq.o hash.o index.o parse.o query.o dynamic.o main.o
 
 ifeq ($(shell uname -s),Linux)
-	PROG = pTrimmer-1.3.3
+	PROG = pTrimmer-1.3.4
 	LIBS += -lz
 	RM = rm
 else ifeq ($(shell uname -s),Darwin)
-	PROG = pTrimmer-1.3.3
+	PROG = pTrimmer-1.3.4
 	LIBS += -lz
 	RM = rm
 else
-	PROG = pTrimmer-1.3.3.exe
+	PROG = pTrimmer-1.3.4.exe
 	INCLUDE += -IWin32
 	LIBDIR += -LWin32
 	LIBS += -lzdll
