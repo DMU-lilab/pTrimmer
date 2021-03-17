@@ -102,7 +102,7 @@ int ReadLenCheck(char *infile)
     } gzclose(fq.in);
 
     if (maxlen >= FQLINE) {
-        fprintf(stderr, "[Error] Read length(%d) is longer than defined maximum read length(%d)\n", maxlen, FQLINE);
+        fprintf(stderr, "[Error] Read length is longer than defined maximum read length(%d)\n", FQLINE);
         exit(-1);
     }
       
