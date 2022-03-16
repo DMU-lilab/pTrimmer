@@ -1,4 +1,4 @@
-/* function: parse the comand line parmeters */
+/* function: parse the comand line parameters */
 
 #include "fastq.h"
 #include "utils.h"
@@ -10,19 +10,19 @@ void Usage(void)
         "Version: 1.3.4\n"
         "\n"
         "Options:\n"
-        "       -h|--help        print help infomation\n"
+        "       -h|--help        print help information\n"
         "       -l|--keep        keep the complete reads if failed to locate primer\n" 
         "                        sequence [default: discard the reads]\n"
         "       -t|--seqtype     [required] the sequencing type [single|pair]\n"
         "       -a|--ampfile     [required] input amplicon file [.txt]\n"
         "       -f|--read1       [required] read1(forward) for fastq file [.fq|.gz]\n"
-        "       -d|--trim1       [required] the trimed read1 of fastq file\n"
+        "       -d|--trim1       [required] the trimmed read1 of fastq file\n"
         "       -r|--read2       [optional] read2(reverse) for fastq file (paired-end seqtype) [.fq|.gz]\n"
         "       -e|--trim2       [optional] the trimed read2 of fastq file (paired-end seqtype)\n"
         "       -s|--summary     [optional] the trimming information of each amplicon [default: Summary.ampcount]\n"
-        "       -q|--minqual     [optional] the minimum average quality to keep after triming [20]\n"
-        "       -k|--kmer        [optional] the kmer lenght for indexing [8]\n"
-        "       -m|--mismatch    [optional] the maxmum mismatch for primer seq [3]\n\n";
+        "       -q|--minqual     [optional] the minimum average quality to keep after trimming [20]\n"
+        "       -k|--kmer        [optional] the kmer length for indexing [8]\n"
+        "       -m|--mismatch    [optional] the maximum mismatch for primer seq [3]\n\n";
 
     fprintf(stderr, "%s", usage); 
     exit(-1);
@@ -83,7 +83,7 @@ arg_t *ParseOpt( int argc, char **argv )
         }
     } 
     if (!Arg->ampfile[0] || !Arg->read1[0] || (Arg->seqtype == -1) || !Arg->trim1[0]) {
-        fprintf(stderr, "[Err::%s::%d] Please give the [requied] parmeters!\n", __func__, __LINE__);
+        fprintf(stderr, "[Err::%s::%d] Please give the [required] parameters!\n", __func__, __LINE__);
         Arg->help = 1;
     }
     if (Arg->seqtype == PE) {
