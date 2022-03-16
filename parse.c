@@ -78,7 +78,7 @@ arg_t *ParseOpt( int argc, char **argv )
             case 'q': Arg->minqual = atoi(optarg); break;
             case 'k': Arg->kmer = atoi(optarg); break;
             case 'm': Arg->mismatch = atoi(optarg); break;
-            case '?': fprintf(stderr, "[Err::%s::%d] Option error occour!.\n", __func__, __LINE__);
+            case '?': fprintf(stderr, "[Err::%s::%d] Option error occoured!.\n", __func__, __LINE__);
                       Arg->help = 1;
         }
     } 
@@ -89,7 +89,7 @@ arg_t *ParseOpt( int argc, char **argv )
     if (Arg->seqtype == PE) {
         if (!Arg->read2[0] || !Arg->trim2[0]) {
             fprintf(stderr, "[Err::%s::%d]  \
-            Please give the parmeters (read2 and trim2) in pair-end mode!\n", __func__, __LINE__);
+            Please give the parameters (read2 and trim2) in pair-end mode!\n", __func__, __LINE__);
             Arg->help = 1;
         }
     }
