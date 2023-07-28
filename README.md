@@ -1,5 +1,10 @@
 pTrimmer
 =========================
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/ptrimmer/badges/version.svg)](https://anaconda.org/bioconda/ptrimmer)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/ptrimmer/badges/platforms.svg)](https://anaconda.org/bioconda/ptrimmer)
+[![Anaconda-Server Badge](https://anaconda.org/bioconda/ptrimmer/badges/downloads.svg)](https://anaconda.org/bioconda/ptrimmer)
+
+
 Used to trim off the primer sequence from amplicon fastq file
 
 
