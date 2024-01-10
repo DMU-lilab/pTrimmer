@@ -2,12 +2,13 @@
 
 #include "fastq.h"
 #include "utils.h"
+#include "version.h"
+
 
 void Usage(void)
 {
     char *usage =
         "\nUsage: pTrimmer [options]\n"
-        "Version: 1.3.4\n"
         "\n"
         "Options:\n"
         "       -h|--help        print help information\n"
@@ -24,6 +25,10 @@ void Usage(void)
         "       -k|--kmer        [optional] the kmer length for indexing [8]\n"
         "       -m|--mismatch    [optional] the maximum mismatch for primer seq [3]\n\n";
 
+    fprintf(stderr, "Program: pTrimmer (v%s)\n", PTRIMMER_VERSION_STRING);
+    fprintf(stderr, "CreateDate: %s\n", PTRIMMER_CREATE_DATE);
+    fprintf(stderr, "UpdateDate: %s\n", PTRIMMER_UPDATE_DATE);
+    fprintf(stderr, "Author: XiaolongZhang (xiaolongzhang2015@163.com)\n");
     fprintf(stderr, "%s", usage); 
     exit(-1);
 }

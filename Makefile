@@ -1,4 +1,5 @@
 # Makefile for pTrimmer
+# update: 20240110
 
 DEBUG = 0
 
@@ -18,34 +19,31 @@ endif
 OBJECT = fastq.o hash.o index.o parse.o query.o dynamic.o main.o
 
 ifeq ($(shell uname -s),Linux)
-	PROG = pTrimmer-1.3.4
+	PROG = pTrimmer
 	LIBS += -lz
 	RM = rm
 else ifeq ($(shell uname -s),Darwin)
-	PROG = pTrimmer-1.3.4
+	PROG = pTrimmer
 	LIBS += -lz
 	RM = rm
 else
-	PROG = pTrimmer-1.3.4.exe
+	PROG = pTrimmer.exe
 	INCLUDE += -IWin32
 	LIBDIR += -LWin32
 	LIBS += -lzdll
 	RM = del
 endif
 
+all: $(PROG)
+
 $(PROG): $(OBJECT)
 	$(CC) $(CFLAGS) $(OBJECT) -o $@ $(INCLUDE) $(LIBDIR) $(LIBS)
 
-fastq.o: fastq.h utils.h
-hash.o: hash.h
-index.o: hash.h utils.h
-parse.o: fastq.h utils.h
-query.o: query.h
-dynamic.o: dynamic.h
-main.o: query.h
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 .PHONY : clean
 
 clean:
-	$(RM) -f $(OBJECT)
+	$(RM) -f $(OBJECT) $(PROG)
 
