@@ -40,6 +40,7 @@ enum ILLUMINATYPE { Phrd33 = 0, Phrd64 = 1};
  @field mismatch     mismatch allowed between the primer and sequence
  @field seqtype      sequencing type which include single-end and paired-end
  @field keep         if true, keep the complete reads that can not find primer
+ @field gzip         if given, compress the trimmed reads in Gzip format
  @field minqual      the mimimum average quality of the reads after trimming
  @field ampfile      the path of amplicon file [format: see example]
  @field read1        the path of fastq file of R1
@@ -54,6 +55,7 @@ typedef struct __arg_t {
     int mismatch;
     int seqtype; // SE(single) or PE(pair)
     int keep;    // 0 or 1
+    int gzip;  // 0 (not gzipped) or 1 (gzipped)
     int minqual; // default: 20
     char ampfile[PATH_MAX];
     char read1[PATH_MAX];

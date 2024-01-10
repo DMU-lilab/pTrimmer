@@ -19,7 +19,8 @@ void Usage(void)
         "       -f|--read1       [required] read1(forward) for fastq file [.fq|.gz]\n"
         "       -d|--trim1       [required] the trimmed read1 of fastq file\n"
         "       -r|--read2       [optional] read2(reverse) for fastq file (paired-end seqtype) [.fq|.gz]\n"
-        "       -e|--trim2       [optional] the trimed read2 of fastq file (paired-end seqtype)\n"
+        "       -e|--trim2       [optional] the trimmed read2 of fastq file (paired-end seqtype)\n"
+        "       -z|--gzip        [optional] output trimmed fastq file in Gzip format\n"
         "       -s|--summary     [optional] the trimming information of each amplicon [default: Summary.ampcount]\n"
         "       -q|--minqual     [optional] the minimum average quality to keep after trimming [20]\n"
         "       -k|--kmer        [optional] the kmer length for indexing [8]\n"
@@ -43,6 +44,7 @@ static const struct option long_options[] =
     { "trim1", required_argument, NULL, 'd' },
     { "read2", required_argument, NULL, 'r' },
     { "trim2", required_argument, NULL, 'e' },
+    { "gzip", no_argument, NULL, 'z' },
     { "summary", required_argument, NULL, 's' },
     { "minqual", required_argument, NULL, 'q' },
     { "kmer", required_argument, NULL, 'k' },
@@ -53,6 +55,7 @@ static const struct option long_options[] =
 static void ArgInit(arg_t *Arg)
 {
     Arg->keep = 0;
+    Arg->gzip = 0;
     Arg->seqtype = -1;
     Arg->minqual = 20;
     Arg->kmer = 8;
@@ -61,16 +64,17 @@ static void ArgInit(arg_t *Arg)
 
 arg_t *ParseOpt( int argc, char **argv )
 {
-    int opt =0, opterr =0;
+    int opt;
     arg_t *Arg;
     
     err_calloc(Arg, 1, arg_t);
     ArgInit(Arg);
-    while ( (opt = getopt_long(argc, argv, "t:a:f:d:r:e:s:q:k:m:hl", long_options, NULL)) != -1 )
+    while ( (opt = getopt_long(argc, argv, "t:a:f:d:r:e:s:q:k:m:hlz", long_options, NULL)) != -1 )
     {
         switch (opt) {
             case 'h': Arg->help = 1; break;
             case 'l': Arg->keep = 1; break;
+            case 'z': Arg->gzip = 1; break;
             case 't': if (!strcmp(optarg, "single")) Arg->seqtype = SE;
                       else if (!strcmp(optarg, "pair")) Arg->seqtype = PE;
                       else Arg->seqtype = -1; break;
@@ -83,8 +87,9 @@ arg_t *ParseOpt( int argc, char **argv )
             case 'q': Arg->minqual = atoi(optarg); break;
             case 'k': Arg->kmer = atoi(optarg); break;
             case 'm': Arg->mismatch = atoi(optarg); break;
-            case '?': fprintf(stderr, "[Err::%s::%d] Option error occoured!.\n", __func__, __LINE__);
-                      Arg->help = 1;
+            default:
+                fprintf(stderr, "[Err::%s::%d] Option error occurred!.\n", __func__, __LINE__);
+                Arg->help = 1;
         }
     } 
     if (!Arg->ampfile[0] || !Arg->read1[0] || (Arg->seqtype == -1) || !Arg->trim1[0]) {
@@ -93,8 +98,7 @@ arg_t *ParseOpt( int argc, char **argv )
     }
     if (Arg->seqtype == PE) {
         if (!Arg->read2[0] || !Arg->trim2[0]) {
-            fprintf(stderr, "[Err::%s::%d]  \
-            Please give the parameters (read2 and trim2) in pair-end mode!\n", __func__, __LINE__);
+            fprintf(stderr, "[Err::%s::%d] Please give the parameters (read2 and trim2) in pair-end mode!\n", __func__, __LINE__);
             Arg->help = 1;
         }
     }
