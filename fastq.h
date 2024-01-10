@@ -2,108 +2,67 @@
 #define FASTQ_H
 
 #include <stdio.h>
-#include <getopt.h>
 #include <string.h>
 #include <stdlib.h>
-
-#ifdef _WIN32
-  #include "Win32\zlib.h"
-  #define PATH_MAX 260
-  #define BUFNUM 1024 // default buf number for the fastq cache
-#elif __linux__
-  #include <zlib.h>
-  #include <linux/limits.h>
-  #define BUFNUM 1024
-#else
-  #include <zlib.h>
-  #include <limits.h>
-  #define BUFNUM 1024
-#endif
+#include <stdint.h>
+#include "parse.h"
+#include "utils.h"
+#include "fileio.h"
 
 
-#define FQLINE 512    // maxmum length for the fastq line
-#define BUFLINE 1024  // maxmum bufer line for file reading
+#define BUFF_NUM 65536  // maximum number of reads for cache (trimmed reads)
 
 
 /* fastq type [ read1 or read2 ] */
 enum READTYPE { READ1 = 0, READ2 = 1 };
-/* sequencing type SE (Single-end) and PE (Paired-end) */
-enum SEQTYPE { SE = 0, PE = 1 };
+
 /* illumina quality type phred+33(33<=qual<=75) and phred+64(64<=qual<=106)*/
 enum ILLUMINATYPE { Phrd33 = 0, Phrd64 = 1};
 
 
-/*! @typedef arg_t
- @abstract structure for the comand line args
- @field help         [0 | 1] if 1: print the help infomation
- @field kmer         the length for primer index
- @field mismatch     mismatch allowed between the primer and sequence
- @field seqtype      sequencing type which include single-end and paired-end
- @field keep         if true, keep the complete reads that can not find primer
- @field gzip         if given, compress the trimmed reads in Gzip format
- @field minqual      the mimimum average quality of the reads after trimming
- @field ampfile      the path of amplicon file [format: see example]
- @field read1        the path of fastq file of R1
- @field read2        the path of fastq file of R2
- @field trime1       the path of the trimed fastq file of R1
- @field trime2       the path of the trimed fastq file of R2
- @field summary      the path of the summary file [default: Summary.ampcount]
-*/
-typedef struct __arg_t {
-    int help;
-    int kmer;
-    int mismatch;
-    int seqtype; // SE(single) or PE(pair)
-    int keep;    // 0 or 1
-    int gzip;  // 0 (not gzipped) or 1 (gzipped)
-    int minqual; // default: 20
-    char ampfile[PATH_MAX];
-    char read1[PATH_MAX];
-    char read2[PATH_MAX];
-    char trim1[PATH_MAX];
-    char trim2[PATH_MAX];
-    char summary[PATH_MAX];
-} arg_t;
-
-
 /*! @typedef read_t
- @abstract structure for one fastq read group
- @field name         the seqname for the read
- @field seq          the sequence for the read
- @field mark         the fixed marker['+']
- @field qual         the quality for the read
-*/
+  @abstract the new read object
+  @field  name      the name of read('@' will be repleaced with pair_marker if 'pair_check' is given).
+                    eg. @ST-E00126:HWM7:3173:1784 2:N:AAGAC -> 2ST-E00126:HWM7:3173:1784
+  @field  seq       the sequence of the read
+  @field  comment   the comment of the read, usually is a character of '+'
+  @field  qual      the quality of the read
+ */
 typedef struct __read_t {
-    char name[FQLINE];
-    char seq[FQLINE];
-    char mark[FQLINE];
-    char qual[FQLINE];
+    kstring_t name;
+    kstring_t seq;
+    kstring_t comment;
+    kstring_t qual;
 } read_t;
 
 
 /*! @typedef fastq_t
  @abstract structure for the single fastq file
- @field in, out      the input and output pointer for the fastq [FILE *]
- @field read         a fastq read group
- @field bufnum       the bufnum for the cache
+ @field in_hd        the input stream handle of the input fastq file
+ @field out_hd       the output stream handle of the trimmed fastq file
+ @field read         a fastq read object
+ @field size         the current number of reads in the cache
+ @field max          the memory allocated for the cache
  @field cache        the buffer for the fastq cache
 */
 typedef struct __fastq_t {
-    gzFile in;
-    FILE *out;
+    GzStream *in_hd;
+    GzStream *out_hd;
     read_t read;
-    int bufnum;
-    read_t cache[BUFNUM];
+    int size, max;
+    read_t *cache;
 } fastq_t;
 
 
 /* prototype function */
 void FastqInit(fastq_t *, arg_t *, int);
+void FastqDestroy(fastq_t *);
 int PhredCheck(char *);
 int ReadLenCheck(char *);
-float MeanQuality(char *, int);
-int FastqRead(fastq_t *);
-void FastqWrite(fastq_t *);
+float MeanQuality(kstring_t *, int);
+int FastqGetRead(GzStream *, read_t *);
+void FastqWriteCache(fastq_t *);
+void FastqFreeRead(read_t *);
 
 /* parse the comand line parmerters*/
 void Usage(void);
