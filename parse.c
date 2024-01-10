@@ -1,6 +1,6 @@
 /* function: parse the comand line parameters */
 
-#include "fastq.h"
+#include "parse.h"
 #include "utils.h"
 #include "version.h"
 
@@ -96,10 +96,19 @@ arg_t *ParseOpt( int argc, char **argv )
         fprintf(stderr, "[Err::%s::%d] Please give the [required] parameters!\n", __func__, __LINE__);
         Arg->help = 1;
     }
+    /* check the suffix of the trimmed fastq file */
+    if (Arg->gzip && !strstr(Arg->trim1, ".gz")) {
+        strcat(Arg->trim1, ".gz");  /* add suffix of .gz to the file */
+    }
+
     if (Arg->seqtype == PE) {
         if (!Arg->read2[0] || !Arg->trim2[0]) {
             fprintf(stderr, "[Err::%s::%d] Please give the parameters (read2 and trim2) in pair-end mode!\n", __func__, __LINE__);
             Arg->help = 1;
+        }
+        /* check the suffix of the trimmed fastq file */
+        if (Arg->gzip && !strstr(Arg->trim2, ".gz")) {
+            strcat(Arg->trim2, ".gz");  /* add suffix of .gz to the file */
         }
     }
 
