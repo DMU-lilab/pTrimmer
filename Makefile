@@ -16,7 +16,7 @@ else
 endif
 
 
-OBJECT = fastq.o hash.o index.o parse.o query.o dynamic.o main.o
+OBJECT = fastq.o hash.o index.o parse.o query.o dynamic.o fileio.o utils.o main.o
 
 ifeq ($(shell uname -s),Linux)
 	PROG = pTrimmer
