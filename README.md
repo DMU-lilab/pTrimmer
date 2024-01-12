@@ -171,7 +171,8 @@ Input
 **Note**
 
 * The sequence of both forward and reverse primers should be in the direction of 5' to 3'
-* The insert length is no necessary to be very accurate, it is only used to determine the two conditions of primer trimming, however, we suggest that users calculate the insert length according to the position given by the primer-design tools:
+* The insert length is no necessary to be very accurate, it is only used to determine the two conditions of primer <br /> 
+  trimming, however, we suggest that users calculate the insert length according to the position given by the primer-design tools:
 
       (1) read-through condition
 
