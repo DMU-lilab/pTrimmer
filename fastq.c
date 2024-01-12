@@ -39,7 +39,7 @@ void FastqInit(fastq_t *fq, arg_t *args, int type)
 int PhredCheck(char *infile)
 {
     int min=128, max=0;
-    read_t read;
+    read_t read = {0};
 
     GzStream *gz_hd = gz_stream_open(infile, "r");
     for (int i=0; i < 1000; i++) {
@@ -72,14 +72,14 @@ int PhredCheck(char *infile)
 int ReadLenCheck(char *infile)
 {
     int max_len = 0;
-    read_t read;
+    read_t read = {0};
 
     GzStream *gz_hd = gz_stream_open(infile, "r");
     for (int i=0; i < 1000; i++) {
         if (FastqGetRead(gz_hd, &read) == 0)
             break;  /* EOF of the fastq file */
 
-        int seq_len = (int)read.seq.l;
+        int seq_len = (int)read.seq.l - 1;
         if (seq_len > max_len) max_len = seq_len;
     }
     gz_stream_destroy(gz_hd);
