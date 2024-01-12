@@ -11,15 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <zlib.h>
 #include "utils.h"  // for kstring_t
-
-#ifdef _WIN32
-#include "Win32\zlib.h"
-#elif __linux__
-#include <zlib.h>
-#else
-#include <zlib.h>
-#endif
 
 
 /* number of bytes cached from *.gz file */
