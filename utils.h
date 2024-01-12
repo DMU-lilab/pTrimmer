@@ -68,5 +68,7 @@ kstring_t *k_strcpy(kstring_t *kdest, const char *src);
 /* copy n bytes from src to kdest */
 kstring_t *k_strncpy(kstring_t *kdest, const char *src, size_t n);
 
+/* append the string to the kdest */
+kstring_t *k_strcat(kstring_t *kdest, const char *src);
 
 #endif

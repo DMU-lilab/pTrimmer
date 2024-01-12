@@ -6,7 +6,7 @@ DEBUG = 0
 CC = gcc
 CFLAGS = -std=c99
 LIBDIR =
-LIBS = -lpthread
+LIBS = -lpthread -lz
 INCLUDE = 
 
 ifeq ($(DEBUG), 1)
@@ -18,20 +18,11 @@ endif
 
 OBJECT = fastq.o hash.o index.o parse.o query.o dynamic.o fileio.o utils.o main.o
 
-ifeq ($(shell uname -s),Linux)
-	PROG = pTrimmer
-	LIBS += -lz
-	RM = rm
-else ifeq ($(shell uname -s),Darwin)
-	PROG = pTrimmer
-	LIBS += -lz
-	RM = rm
-else
+ifeq ($(OS),Windows_NT)
 	PROG = pTrimmer.exe
-	INCLUDE += -IWin32
-	LIBDIR += -LWin32
-	LIBS += -lzdll
-	RM = del
+	LIBS += -static
+else  # Linux and Darwin
+	PROG = pTrimmer
 endif
 
 all: $(PROG)
