@@ -3,17 +3,6 @@
 #include "index.h"
 #include "utils.h"
 
-#ifdef _WIN32
-  #define PATH_MAX 260
-  #define _PDELIM_ 92 // '\'
-#elif __linux__
-  #include <linux/limits.h>
-  #define _PDELIM_ 47 // '/'
-#else
-  #include <limits.h>
-  #define _PDELIM_ 47 // '/'
-#endif
-
 
 /*! @funciton: split the primer line
  *   @parmeters:
@@ -41,6 +30,8 @@ prim_t *GetPrim(char *filename)
             a = &(p->amp[p->ampnum]);
             a->readnum = 0;
             sscanf(buf, "%s%s%d%s", a->fwdprim, a->revprim, &a->insertlen, a->auxinfo);
+            a->fwd_len = (int)strlen(a->fwdprim);
+            a->rev_len = (int)strlen(a->revprim);
             p->ampnum++;
         }
     } fclose(file);

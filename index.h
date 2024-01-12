@@ -31,6 +31,8 @@ static  uint8_t _BASE[96] = {
  @abstract structure for the amplicon line
  @field insertlen      the insert length for the paired primer
  @field readnum        the read number within the amplicon
+ @field fwd_len        the length of the forward primer
+ @field rev_len        the length of the reverse primer
  @field fwdprim        forward primer sequence
  @field revprim        reverse primer sequence
  @field auxinfo        other filed infomation
@@ -38,6 +40,8 @@ static  uint8_t _BASE[96] = {
 typedef struct __amp_t {
     int insertlen;
     int readnum;
+    int fwd_len;
+    int rev_len;
     char fwdprim[MAXPRIMLEN];
     char revprim[MAXPRIMLEN];
     char auxinfo[AUXLEN];
