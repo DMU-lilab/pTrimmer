@@ -7,7 +7,8 @@ CC = gcc
 CFLAGS = -std=c99
 LIBDIR =
 LIBS = -lpthread -lz
-INCLUDE = 
+INCLUDE =
+RM = rm
 
 ifeq ($(DEBUG), 1)
     CFLAGS += -g -O0 # enable debugging
