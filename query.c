@@ -266,6 +266,33 @@ query_t PrimQuery(char *seq, arginfo_t *arg)
     return Q;
 }
 
+/* add primer information to comment of the trimmed read */
+void AddPrimerInfo(kstring_t *comment, query_t *Q, amp_t *amp)
+{
+    char buf[64];
+    int f_start=0, f_end=0, r_start=0, r_end=0;
+
+    /* failed to find the read's primer */
+    if (Q->isfind == 0) {
+        sprintf(buf, "+ P=%d F=%d:%d R=%d:%d\n", 0, f_start, f_end, r_start, r_end);
+        k_strcpy(comment, buf);
+        return ;
+    }
+
+    /* calculate the primer location on the read */
+    amp_t *amp_obj = &amp[Q->ploc];
+
+    f_start = Q->pstart - amp_obj->fwd_len + 1;
+    f_end = Q->pstart;
+
+    if (Q->pend > 0) {  /* read-through condition */
+        r_start = Q->pend + 2;
+        r_end = r_start + amp_obj->rev_len - 1;
+    }
+    sprintf(buf, "+ P=%d F=%d:%d R=%d:%d\n", Q->ploc+1, f_start, f_end, r_start, r_end);
+    k_strcpy(comment, buf);
+}
+
 
 /*! @funciton: trim off the primer seq
  *   @parmeters:
@@ -278,17 +305,19 @@ query_t PrimQuery(char *seq, arginfo_t *arg)
 void PrimTrim(fastq_t *fq, query_t *Q, arginfo_t *arg)
 {
     read_t *dest_read, *src_read;
-    int discard=0;
+    amp_t *amp_obj = arg->fwdprim->amp;
     float min_qual = (float)arg->args->minqual;
 
     dest_read = &fq->cache[fq->size++];
     src_read = &fq->read;
-
-    // TODO: add primer marker to the comment of fastq read
     k_strcpy(&dest_read->name, src_read->name.s);
-    k_strcpy(&dest_read->comment, src_read->comment.s);
 
-    if (Q->isfind) { // find the primer sequence
+    /* add primer info for trimmed read in field of comment */
+    if (arg->args->info) AddPrimerInfo(&dest_read->comment, Q, amp_obj);
+    else k_strcpy(&dest_read->comment, "+\n");
+
+    /* trimming the primer sequence */
+    while (Q->isfind) {  // find the primer sequence
         k_strcpy(&dest_read->seq, src_read->seq.s+Q->pstart);
         k_strcpy(&dest_read->qual, src_read->qual.s+Q->pstart);
         if (Q->pend) {
@@ -299,28 +328,24 @@ void PrimTrim(fastq_t *fq, query_t *Q, arginfo_t *arg)
             k_strncpy(&dest_read->qual, dest_read->qual.s, inlen);
             k_strcat(&dest_read->qual, "\n");
         }
-        float q = MeanQuality(&dest_read->qual, arg->phred);
-        if (q < min_qual) {
-            Q->badqual = 1;
-            if (arg->args->keep) {
-                k_strcpy(&dest_read->seq, src_read->seq.s);
-                k_strcpy(&dest_read->qual, src_read->qual.s);
-            }
-            else discard = 1;
-        }
-        if (dest_read->seq.l < 1) discard = 1;
-    }
-    else { // can't find the primer sequence
-        if (arg->args->keep) {
-            k_strcpy(&dest_read->seq, src_read->seq.s);
-            k_strcpy(&dest_read->qual, src_read->qual.s);
-        }
-        else discard = 1;
-    }
-    if (discard) {
-        k_strcpy(&dest_read->seq, "NNNNNNNNNNNNNNNNNNNN\n");
-        k_strcpy(&dest_read->qual, "!!!!!!!!!!!!!!!!!!!!\n");
-    }
-}
+        if (dest_read->seq.l < 1) break;  /* the length is too short */
 
+        /* evaluate the quality */
+        if (MeanQuality(&dest_read->qual, arg->phred) < min_qual) {
+            Q->badqual = 1; break;
+        }
+        return ;
+    }
+
+    /* failed to find the primer sequence or bad quality or too short length */
+    if (arg->args->keep) {
+        k_strcpy(&dest_read->seq, src_read->seq.s);
+        k_strcpy(&dest_read->qual, src_read->qual.s);
+        return ;
+    }
+
+    /* replace the sequence and quality */
+    k_strcpy(&dest_read->seq, "NNNNNNNNNNNNNNNNNNNN\n");
+    k_strcpy(&dest_read->qual, "!!!!!!!!!!!!!!!!!!!!\n");
+}
 
