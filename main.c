@@ -17,6 +17,7 @@
 
 #include <pthread.h>
 #include <time.h>
+#include <inttypes.h>
 
 #include "utils.h"
 #include "query.h"
@@ -41,23 +42,26 @@ void *process(void *arginfo)
     report_t rep = {0};
     arginfo_t *Arg = (arginfo_t *)arginfo;
     fastq_t *fq = &Arg->fastq;
+    read_t *read = &fq->read;
 
     FastqInit(fq, Arg->args, Arg->isread2);
     rep.ampnum = Arg->fwdprim->ampnum;
     err_calloc(rep.ampcount, rep.ampnum, int);
 
-    while (FastqRead(fq)) {
+    while (FastqGetRead(fq->in_hd, read)) {
         ++rep.total;
-        if (fq->bufnum % BUFNUM == 0) FastqWrite(fq);
-        
-        Q = PrimQuery(fq->read.seq, Arg);
+        if (fq->size == fq->max) FastqWriteCache(fq);
+
+        Q = PrimQuery(read->seq.s, Arg);
         if (Q.isfind) /* Even bad quality the read has */
             rep.ampcount[Q.ploc]++;
         else ++rep.badprim;
 
         Q.badqual = 0; PrimTrim(fq, &Q, Arg);
         if (Q.badqual) rep.badqual++;
-    } FastqWrite(fq);
+    }
+    FastqWriteCache(fq);
+    FastqDestroy(fq);  /* close and free the resource */
 
     pthread_mutex_lock(&Lock); 
     amp_t *amp = Arg->fwdprim->amp;
@@ -69,6 +73,7 @@ void *process(void *arginfo)
     pthread_mutex_unlock(&Lock);
 
     free(rep.ampcount);
+    return NULL;
 }
 
 
@@ -128,18 +133,10 @@ int main(int argc, char **argv)
 
     /* ------------------- summary ------------------- */
     fprintf(stdout, "\n----------------- Summary ------------------------\n");
-
-#ifdef __x86_64__
-    fprintf(stdout, "Total reads processed: %lu\n", Total);
-    fprintf(stdout, "Reads have bad primer: %lu\n", BadPrim);
-    fprintf(stdout, "Reads have bad quality: %lu\n", BadQual);
-#else
-    fprintf(stdout, "Total reads processed: %llu\n", Total);
-    fprintf(stdout, "Reads have bad primer: %llu\n", BadPrim);
-    fprintf(stdout, "Reads have bad quality: %llu\n", BadQual);
-#endif
-
-    fprintf(stdout, "Reads successfully trimed and have good quality: %.2f %%\n", (float)(Total-BadPrim-BadQual)/Total*100);
+    fprintf(stdout, "Total reads processed: %"PRIu64"\n", Total);
+    fprintf(stdout, "Reads have bad primer: %"PRIu64"\n", BadPrim);
+    fprintf(stdout, "Reads have bad quality: %"PRIu64"\n", BadQual);
+    fprintf(stdout, "Reads successfully trimmed and have good quality: %.2f %%\n", (float)(Total-BadPrim-BadQual)/(float)Total*100);
 
     return 0;
 }
