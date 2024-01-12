@@ -45,10 +45,15 @@ int MaxPrimLen(prim_t *P)
 
     for (int i=0; i < P->ampnum; ++i) {
         a = &P->amp[i];
-        flen = strlen(a->fwdprim);
-        rlen = strlen(a->revprim);
+        flen = (int)strlen(a->fwdprim);
+        rlen = (int)strlen(a->revprim);
         max = flen > max ? flen : max;
         max = rlen > max ? rlen : max;
+    }
+
+    if (max > MAX_PRIMMER_LEN) {
+        fprintf(stderr, "[Err:%s] the primer length can not longer than %d!", __func__, max);
+        exit(-1);
     }
 
     return max;
@@ -73,7 +78,7 @@ query_t HammingMode(char *seq, prim_t *P, int mis, int index, status *S)
              * index=2; sloc=0 => shift=2 */
             string = seq + shift;
         }
-        else if (shift < 0 && shift >= -mis) {
+        else if (shift >= -mis) {
             /* string:   GCCGAATTGATGCCTGA
              *   pstr: ATGCCGAA
              * index=0; sloc=2 => shift=-2 */
@@ -85,7 +90,7 @@ query_t HammingMode(char *seq, prim_t *P, int mis, int index, status *S)
             Q.isfind = 1;
             Q.ploc = loc->ploc;
             Q.pstart = shift < 0 ? 0 : shift;
-            Q.pend = Q.pstart + strlen(pstr) - 1;
+            Q.pend = Q.pstart + (int)strlen(pstr) - 1;
             return Q;
         }
     }
@@ -100,8 +105,8 @@ query_t DynamicMode(char *seq, compo_t *compo, prim_t *P, int mis)
     char *pstr = compo->frloc ?
             P->amp[compo->ploc].revprim : P->amp[compo->ploc].fwdprim;
 
-    int slen = strlen(seq);
-    int plen = strlen(pstr);
+    int slen = (int)strlen(seq);
+    int plen = (int)strlen(pstr);
     /* search with dynamic algorithm */
     d = global_align(seq, slen, pstr, plen, mis);
 
@@ -149,7 +154,6 @@ static void CalHits(hit_t *hit, node_t *node, int seqi)
             c->score = 1; /* the value may not be zero after relloc */
         }
     }
-    return ;
 }
 
 
@@ -160,7 +164,7 @@ static hit_t *GetHits(char *seq, hash_t *H, int kmer)
     hit_t *hit;
 
     err_calloc(hit, 1, hit_t);
-    int cutlen = strlen(seq);
+    int cutlen = (int)strlen(seq);
 
     /* 'N' is imposible occured in primer index */
     for (int i=0; i < cutlen; ++i) {
@@ -228,7 +232,7 @@ static query_t SeqQuery(char *seq, hash_t *H, prim_t *P, int mis, int kmer)
 query_t PrimQuery(char *seq, arginfo_t *arg)
 {
     query_t f, r, Q ;
-    char temseq[FQLINE];
+    char temseq[MAX_PRIMMER_LEN<<1];
 
     strncpy(temseq, seq, arg->maxpl+BLEN);
     temseq[arg->maxpl+BLEN] = '\0';
@@ -273,49 +277,50 @@ query_t PrimQuery(char *seq, arginfo_t *arg)
 */
 void PrimTrim(fastq_t *fq, query_t *Q, arginfo_t *arg)
 {
-    read_t *read;
-    char *seq, *qual;
+    read_t *dest_read, *src_read;
     int discard=0;
+    float min_qual = (float)arg->args->minqual;
 
-    read = &fq->cache[fq->bufnum++];
-    seq = fq->read.seq; qual = fq->read.qual;
+    dest_read = &fq->cache[fq->size++];
+    src_read = &fq->read;
 
-    strcpy(read->name, fq->read.name); 
-    strcpy(read->mark, fq->read.mark);
+    // TODO: add primer marker to the comment of fastq read
+    k_strcpy(&dest_read->name, src_read->name.s);
+    k_strcpy(&dest_read->comment, src_read->comment.s);
 
-    if (Q->isfind) { // find the primer sequence 
-        strcpy(read->seq, seq+Q->pstart);
-        strcpy(read->qual, qual+Q->pstart);
+    if (Q->isfind) { // find the primer sequence
+        k_strcpy(&dest_read->seq, src_read->seq.s+Q->pstart);
+        k_strcpy(&dest_read->qual, src_read->qual.s+Q->pstart);
         if (Q->pend) {
             /* read through */
             int inlen = Q->pend - Q->pstart +1;
-            strcpy(read->seq+inlen, "\n");
-            strcpy(read->qual+inlen, "\n");
+            k_strncpy(&dest_read->seq, dest_read->seq.s, inlen);
+            k_strcat(&dest_read->seq, "\n");
+            k_strncpy(&dest_read->qual, dest_read->qual.s, inlen);
+            k_strcat(&dest_read->qual, "\n");
         }
-        float q = MeanQuality(read->qual, arg->phred);
-        if (q < arg->args->minqual) {
+        float q = MeanQuality(&dest_read->qual, arg->phred);
+        if (q < min_qual) {
             Q->badqual = 1;
             if (arg->args->keep) {
-                strcpy(read->seq, fq->read.seq);
-                strcpy(read->qual, fq->read.qual);
+                k_strcpy(&dest_read->seq, src_read->seq.s);
+                k_strcpy(&dest_read->qual, src_read->qual.s);
             }
             else discard = 1;
         }
-        if (strlen(read->seq) < 1) discard = 1;
+        if (dest_read->seq.l < 1) discard = 1;
     }
     else { // can't find the primer sequence
         if (arg->args->keep) {
-            strcpy(read->seq, fq->read.seq);
-            strcpy(read->qual, fq->read.qual);
+            k_strcpy(&dest_read->seq, src_read->seq.s);
+            k_strcpy(&dest_read->qual, src_read->qual.s);
         }
         else discard = 1;
     }
     if (discard) {
-        strcpy(read->seq, "NNNNNNNNNNNNNNNNNNNN\n");
-        strcpy(read->qual, "!!!!!!!!!!!!!!!!!!!!\n");
+        k_strcpy(&dest_read->seq, "NNNNNNNNNNNNNNNNNNNN\n");
+        k_strcpy(&dest_read->qual, "!!!!!!!!!!!!!!!!!!!!\n");
     }
-    
-    return ;
 }
 
 

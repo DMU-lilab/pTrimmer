@@ -4,6 +4,9 @@
 #include "index.h"
 #include "fastq.h"
 
+/* the maximum length of the primer, which is longer enough */
+#define MAX_PRIMMER_LEN 128
+
 /*! @typedef compo_t
  @abstract structure for the kmer located at same primer sequence
  @field ploc        the primer index in the amplicon list
