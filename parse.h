@@ -16,7 +16,6 @@
 #elif __linux__
   #include <linux/limits.h>
 #else
-#include <zlib.h>
   #include <limits.h>
 #endif
 
@@ -32,6 +31,7 @@ enum SEQTYPE { SE = 0, PE = 1 };
  @field seqtype      sequencing type which include single-end and paired-end
  @field keep         if true, keep the complete reads that can not find primer
  @field gzip         if given, compress the trimmed reads in Gzip format
+ @field info         if given, add the primer information for the read
  @field minqual      the mimimum average quality of the reads after trimming
  @field ampfile      the path of amplicon file [format: see example]
  @field read1        the path of fastq file of R1
@@ -47,6 +47,7 @@ typedef struct __arg_t {
     int seqtype; // SE(single) or PE(pair)
     int keep;    // 0 or 1
     int gzip;  // 0 (not gzipped) or 1 (gzipped)
+    int info;  // 0 (ignore primer info) or 1 (mark primer info)
     int minqual; // default: 20
     char ampfile[PATH_MAX];
     char read1[PATH_MAX];
