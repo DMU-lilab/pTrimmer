@@ -75,7 +75,7 @@ typedef struct __arginfo_t {
 
 /* prototype function */
 int MaxPrimLen(prim_t *);
-query_t PrimQuery(char *, arginfo_t *);
+query_t PrimQuery(kstring_t *, arginfo_t *);
 void PrimTrim(fastq_t *, query_t *, arginfo_t *);
 
 #endif

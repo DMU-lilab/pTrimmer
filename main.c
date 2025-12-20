@@ -52,7 +52,7 @@ void *process(void *arginfo)
         ++rep.total;
         if (fq->size == fq->max) FastqWriteCache(fq);
 
-        Q = PrimQuery(read->seq.s, Arg);
+        Q = PrimQuery(&read->seq, Arg);
         if (Q.isfind) /* Even bad quality the read has */
             rep.ampcount[Q.ploc]++;
         else ++rep.badprim;

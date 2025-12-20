@@ -224,26 +224,34 @@ static query_t SeqQuery(char *seq, hash_t *H, prim_t *P, int mis, int kmer)
 
 /*! @funciton: get the insert fragment start and end (0-base)
  *   @parmeters:
- *   @    seq       the pointer to fastq sequence [char *]
+ *   @    seq       the pointer to fastq sequence [kstring_t *]
  *   @    arg       all the necessary parmeters [arginfo_t *]
  *   @return:
  *   @    Q         the start and end of the insert fragment [query_t]
 */
-query_t PrimQuery(char *seq, arginfo_t *arg)
+query_t PrimQuery(kstring_t *seq, arginfo_t *arg)
 {
     query_t f, r, Q ;
     char temseq[MAX_PRIMMER_LEN<<1];
 
-    strncpy(temseq, seq, arg->maxpl+BLEN);
+    strncpy(temseq, seq->s, arg->maxpl+BLEN);
     temseq[arg->maxpl+BLEN] = '\0';
-    f = SeqQuery(temseq, arg->fwdindex, 
-                arg->fwdprim, arg->args->mismatch, arg->args->kmer);
+
+    f = SeqQuery(
+        temseq,
+        arg->fwdindex,
+        arg->fwdprim,
+        arg->args->mismatch,
+        arg->args->kmer);
+
     if (!f.isfind) {
         Q.isfind = 0; return Q; 
     }
 
     amp_t *amp = &(arg->fwdprim->amp[f.ploc]);
-    if (f.pend+amp->insertlen > arg->maxrl) {
+    int f_len = f.pend + amp->insertlen;
+
+    if (f_len > arg->maxrl || f_len+amp->rev_len > seq->l) {
         Q.isfind = 1;
         Q.ploc = f.ploc;
         Q.pstart = f.pend + 1;
@@ -251,9 +259,14 @@ query_t PrimQuery(char *seq, arginfo_t *arg)
         return Q;
     }
 
-    int rstart = f.pend + amp->insertlen - BLEN;
-    r = SeqQuery(seq+rstart, arg->revindex_list[f.ploc],
-                arg->revprim_list[f.ploc], arg->args->mismatch, arg->args->kmer);
+    int rstart = f_len - BLEN;
+    r = SeqQuery(
+        seq->s + rstart,
+        arg->revindex_list[f.ploc],
+        arg->revprim_list[f.ploc],
+        arg->args->mismatch,
+        arg->args->kmer);
+
     if (!r.isfind) { 
         Q.isfind = 0; return Q; 
     }

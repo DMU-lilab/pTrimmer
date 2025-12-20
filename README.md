@@ -9,13 +9,13 @@ Used to trim off the primer sequence from amplicon fastq file
 
 
 __PROGRAM: pTrimmer__<br>
-__VERSION: 1.4.0__<br>
+__VERSION: 1.4.1__<br>
 __PLATFORM: Linux, macOS and Windows__<br>
 __COMPILER: gcc >= 4.8.5__<br>
 __AUTHOR: xiaolong zhang__<br>
 __EMAIL: xiaolongzhang2015@163.com__<br>
 __DATE:   2017-09-21__<br>
-__UPDATE: 2024-01-10__<br>
+__UPDATE: 2025-12-20__<br>
 __DEPENDENCE__<br>
 * zlib >= 1.2.7<br>
 #### NOTE
@@ -28,6 +28,9 @@ __DEPENDENCE__<br>
 * (-i|--info) Allow adding primer information to the comment of the trimmed read <br />
 * Support truncated fastq file detection
 * Maximum allowed sequence length could be 1,000,000 (bp) <br />
+
+#### Bug Fix (2025-12-20)
+* truncated sequence bases introduced by PrimTrim when detect reverse primer sequence
 
 Description
 =========================
